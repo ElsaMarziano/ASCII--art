@@ -34,8 +34,10 @@ public class SubImgCharMatcher {
         double maxMinusMin = this.maxBrightness - this.minBrightness;
         char closestChar = 0;
         for (Map.Entry<Character, Double> currentChar : charset.entrySet()) {
+            // Calculate char brightness according to the rest of the chars in the set
             double newBrightness = (currentChar.getValue()-this.minBrightness)/maxMinusMin;
             double newDifference = Math.abs(newBrightness - brightness);
+            // Update char closest to brightness
             if(newDifference < difference) {
                 difference = newDifference;
                 closestChar = currentChar.getKey();
