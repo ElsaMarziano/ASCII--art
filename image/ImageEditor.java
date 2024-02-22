@@ -1,8 +1,6 @@
 package image;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-//import java.awt.Graphics2D;
 
 
 
@@ -10,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class ImageEditor {
     /**
      *
-     * @param image
+     * @param image The image to pad.
      */
     public static void imagePadding(Image image){
         //Calculate the correct dimensions of the image
@@ -42,9 +40,7 @@ public class ImageEditor {
         image = new Image(paddedImage, newWidth, newHeight);
 
     }
-    public static void parse(Image image){
 
-    }
 
     private static int nearestPowerOf2(int value) {
         return (int) Math.pow(2, Math.ceil(Math.log(value) / Math.log(2)));
