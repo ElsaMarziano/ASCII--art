@@ -45,4 +45,8 @@ public class ImageEditor {
     private static int nearestPowerOf2(int value) {
         return (int) Math.pow(2, Math.ceil(Math.log(value) / Math.log(2)));
     }
+
+    public static double imageBrightness(Image image){
+
+    }
 }
