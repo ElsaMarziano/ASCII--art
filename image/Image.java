@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * A package-private class of the package image.
+ *
  * @author Dan Nirel
  */
 public class Image {
@@ -25,7 +26,7 @@ public class Image {
         pixelArray = new Color[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                pixelArray[i][j]=new Color(im.getRGB(j, i));
+                pixelArray[i][j] = new Color(im.getRGB(j, i));
             }
         }
     }
@@ -48,7 +49,7 @@ public class Image {
         return pixelArray[x][y];
     }
 
-    public void saveImage(String fileName){
+    public void saveImage(String fileName) {
         // Initialize BufferedImage, assuming Color[][] is already properly populated.
         BufferedImage bufferedImage = new BufferedImage(pixelArray[0].length,
                 pixelArray.length, BufferedImage.TYPE_INT_RGB);
@@ -58,7 +59,7 @@ public class Image {
                 bufferedImage.setRGB(y, x, pixelArray[x][y].getRGB());
             }
         }
-        File outputfile = new File(fileName+".jpeg");
+        File outputfile = new File(fileName + ".jpeg");
         try {
             ImageIO.write(bufferedImage, "jpeg", outputfile);
         } catch (IOException e) {
@@ -66,18 +67,28 @@ public class Image {
         }
     }
 
-    public Image[][] parseImage(int resolution){
+    /**
+     * This function separates the image into subimages according to the resolution
+     *
+     * @param resolution the desired resolution
+     * @return an array of arrays of subimages
+     */
+    public Image[][] parseImage(int resolution) {
         int size = this.getWidth() / resolution;
-        Image[][] subImages = new Image[resolution][this.width / size];
+        Image[][] subImages = new Image[resolution][resolution];
 
-        for (int row = 0; row < this.getHeight(); row += size){
-            for (int col = 0; col < this.getWidth(); col += size){
-                subImages[row][col] = getSubImage(size, row, col);
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                subImages[i][j] = getSubImage(size, i * size, j * size);
             }
         }
         return subImages;
     }
 
+
+    /*
+    This function return the subimage corresponding to a row and column
+     */
     private Image getSubImage(int size, int row, int col) {
         // Create a Color[][] array to store the pixels of the sub-image
         Color[][] subImagePixels = new Color[size][size];

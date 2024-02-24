@@ -1,5 +1,7 @@
 package image_char_matching;
 
+import image.BrightnessCalculator;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +57,7 @@ public class SubImgCharMatcher {
      * @param c the char to be added
      */
     public void addChar(char c){
-        double charBrightness = this.getCharBrightness(c);
+        double charBrightness = BrightnessCalculator.getCharBrightness(c, TOTAL_SQUARES);
         this.charset.put(c, charBrightness);
         // Updates the min and max brightness if needed
         if(charBrightness > maxBrightness) maxBrightness = charBrightness;
@@ -81,17 +83,5 @@ public class SubImgCharMatcher {
         }
     }
 
-    /*
-    This function gets a char and returns its brightness
-     */
-    private double getCharBrightness(char c) {
-        boolean[][] boolArray = CharConverter.convertToBoolArray(c);
-        int countTrue = 0;
-        for (boolean[] booleans : boolArray) {
-            for(boolean bool: booleans) {
-                if(bool) countTrue += 1;
-            }
-        }
-        return (double) countTrue / TOTAL_SQUARES;
-    }
+
 }

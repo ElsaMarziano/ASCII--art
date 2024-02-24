@@ -1,29 +1,45 @@
 package ascii_art;
 
+import image.BrightnessCalculator;
 import image.Image;
+import image.ImageEditor;
+import image_char_matching.SubImgCharMatcher;
 
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class AsciiArtAlgorithm {
+    private final SubImgCharMatcher charMatcher;
+    private final int resolution;
+    private final char[] setOfChars;
     private Image image;
-    private int resolution;
-    private Set<Character> setOfChars;
 
-    public AsciiArtAlgorithm(Image image, int resolution, Set<Character> setOfChars){
+    public AsciiArtAlgorithm(Image image, int resolution, char[] setOfChars) {
         this.image = image;
         this.resolution = resolution;
         this.setOfChars = setOfChars;
+        this.charMatcher = new SubImgCharMatcher(setOfChars);
     }
 
-    public void run(){
-        Image[][] subImages = image.parseImage(resolution);
+    public static void main(String[] args) throws IOException {
+        Image image = new Image("./board.jpeg");
+        AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, 2,
+                new char[]{'o', 'm'});
+        System.out.print(Arrays.deepToString(algo.run()));
+    }
 
-        for (Image[] row : subImages) {
-            for (Image subImage : row) {
+    public char[][] run() {
+        image = ImageEditor.imagePadding(image);
+        Image[][] subImages = image.parseImage(resolution);
+        //TODO Check the lengths aren't mixed up
+        char[][] finalPicture = new char[subImages.length][subImages[0].length];
+        for (int i = 0; i < subImages.length; i++) {
+            for (int j = 0; j < subImages[i].length; j++) {
+                double imageBrightness = BrightnessCalculator.calculateBrightness(subImages[i][j]);
+                finalPicture[i][j] = this.charMatcher.getCharByImageBrightness(imageBrightness);
 
             }
         }
+        return finalPicture;
     }
 }
