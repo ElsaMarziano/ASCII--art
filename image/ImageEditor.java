@@ -3,6 +3,10 @@ package image;
 import java.awt.*;
 
 
+/**
+ * This class regroups every function in charge of editing the image in any way whatsoever -
+ * padding it, dividing it to subimages and so on. Every function is static.
+ */
 public class ImageEditor {
     /**
      * This function receives an image and pads it so each side will be the size of a power of 2
@@ -40,7 +44,46 @@ public class ImageEditor {
         return (int) Math.pow(2, Math.ceil(Math.log(value) / Math.log(2)));
     }
 
-    public static double imageBrightness(Image image) {
-        return 0d;
+    /**
+     * This function separates the image into subimages according to the resolution
+     *
+     * @param resolution the desired resolution
+     * @return an array of arrays of subimages
+     */
+    public static Image[][] parseImage(int resolution, Image image) {
+        int size = image.getWidth() / resolution;
+        Image[][] subImages = new Image[resolution][resolution];
+
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                subImages[i][j] = getSubImage(size, i * size, j * size, image);
+            }
+        }
+        return subImages;
+    }
+
+
+    /*
+    This function return the subimage corresponding to a row and column
+     */
+    private static Image getSubImage(int size, int row, int col, Image image) {
+        // Create a Color[][] array to store the pixels of the sub-image
+        Color[][] subImagePixels = new Color[size][size];
+
+        // Copy the pixels from the original image to the sub-image array
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                int originalRow = row + i;
+                int originalCol = col + j;
+
+                // Ensure the originalRow and originalCol are within bounds
+                if (originalRow < image.getHeight() && originalCol < image.getWidth()) {
+                    subImagePixels[i][j] = image.getPixel(originalRow, originalCol);
+                }
+            }
+        }
+
+        // Create and return a new Image object for the sub-image
+        return new Image(subImagePixels, size, size);
     }
 }

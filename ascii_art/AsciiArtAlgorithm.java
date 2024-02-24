@@ -11,13 +11,13 @@ import java.util.Arrays;
 public class AsciiArtAlgorithm {
     private final SubImgCharMatcher charMatcher;
     private final int resolution;
-    private final char[] setOfChars;
+    //    private final char[] setOfChars;
     private Image image;
 
     public AsciiArtAlgorithm(Image image, int resolution, char[] setOfChars) {
         this.image = image;
         this.resolution = resolution;
-        this.setOfChars = setOfChars;
+//        this.setOfChars = setOfChars;
         this.charMatcher = new SubImgCharMatcher(setOfChars);
     }
 
@@ -30,14 +30,13 @@ public class AsciiArtAlgorithm {
 
     public char[][] run() {
         image = ImageEditor.imagePadding(image);
-        Image[][] subImages = image.parseImage(resolution);
+        Image[][] subImages = ImageEditor.parseImage(resolution, image);
         //TODO Check the lengths aren't mixed up
         char[][] finalPicture = new char[subImages.length][subImages[0].length];
         for (int i = 0; i < subImages.length; i++) {
             for (int j = 0; j < subImages[i].length; j++) {
                 double imageBrightness = BrightnessCalculator.calculateBrightness(subImages[i][j]);
                 finalPicture[i][j] = this.charMatcher.getCharByImageBrightness(imageBrightness);
-
             }
         }
         return finalPicture;

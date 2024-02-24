@@ -67,47 +67,4 @@ public class Image {
         }
     }
 
-    /**
-     * This function separates the image into subimages according to the resolution
-     *
-     * @param resolution the desired resolution
-     * @return an array of arrays of subimages
-     */
-    public Image[][] parseImage(int resolution) {
-        int size = this.getWidth() / resolution;
-        Image[][] subImages = new Image[resolution][resolution];
-
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                subImages[i][j] = getSubImage(size, i * size, j * size);
-            }
-        }
-        return subImages;
-    }
-
-
-    /*
-    This function return the subimage corresponding to a row and column
-     */
-    private Image getSubImage(int size, int row, int col) {
-        // Create a Color[][] array to store the pixels of the sub-image
-        Color[][] subImagePixels = new Color[size][size];
-
-        // Copy the pixels from the original image to the sub-image array
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                int originalRow = row + i;
-                int originalCol = col + j;
-
-                // Ensure the originalRow and originalCol are within bounds
-                if (originalRow < height && originalCol < width) {
-                    subImagePixels[i][j] = this.getPixel(originalRow, originalCol);
-                }
-            }
-        }
-
-        // Create and return a new Image object for the sub-image
-        return new Image(subImagePixels, size, size);
-    }
-
 }
