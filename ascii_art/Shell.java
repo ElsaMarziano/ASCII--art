@@ -4,7 +4,7 @@ import image.Image;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidParameterException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -16,12 +16,7 @@ public class Shell {
     private static int resolution = 128;
     private static Image loadedImage;
 
-    public static void main(String[] args) throws InvocationTargetException,
-            IllegalAccessException {
-//        Image image = new Image("./board.jpeg");
-//        AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, 2,
-//                new char[]{'o', 'm'});
-//        System.out.print(Arrays.deepToString(algo.run()));
+    public static void main(String[] args) {
         try {
             Shell.loadedImage = new Image("./cat.jpeg");
             Shell.run();
@@ -31,9 +26,7 @@ public class Shell {
 
     }
 
-    // TODO Check what the others exception are
-    public static void run() throws InvocationTargetException,
-            IllegalAccessException {
+    public static void run() {
         System.out.print(">>> ");
         String command;
         while (true) {
@@ -49,6 +42,9 @@ public class Shell {
                     case "remove" -> Shell.changeCharSet(Objects.requireNonNull(params),
                             Shell.imgCharMatcher::removeChar, "remove");
                     case "res" -> Shell.res(params);
+                    case "image" -> Shell.image(params);
+                    case "output" -> Shell.output(params);
+                    case "asciiArt" -> Shell.asciiArt();
                 }
 
                 System.out.print(">>> ");
@@ -60,7 +56,8 @@ public class Shell {
     }
 
 
-    private static void changeCharSet(String param, Consumer<Character> consumer, String action) throws IllegalArgumentException {
+    private static void changeCharSet(String param, Consumer<Character> consumer,
+                                      String action) throws IllegalArgumentException {
         if (param.equals("all")) {
             //TODO magic numbers and strings
             for (int i = 32; i <= 126; i++) {
@@ -79,7 +76,6 @@ public class Shell {
                 consumer.accept((char) i);
             }
         } else {
-            //TODO Change it to be generic
             throw new IllegalArgumentException("Did not " + action + " due to incorrect format.");
         }
     }
@@ -112,15 +108,23 @@ public class Shell {
 
     }
 
-    private static void image() {
-
+    private static void image(String path) {
+        try {
+            // TODO Check this doesn't erase the image if wrong path is entered
+            Shell.loadedImage = new Image(path);
+        } catch (IOException e) {
+            throw new InvalidParameterException("Did not execute due to problem with image file" +
+                    ".\n");
+        }
     }
 
-    private static void output() {
+    private static void output(String outputStream) {
 
     }
 
     private static void asciiArt() {
-
+//        AsciiArtAlgorithm algo = new AsciiArtAlgorithm(Shell.loadedImage, Shell.resolution,
+//                {});
+//        System.out.print(Arrays.deepToString(algo.run()));
     }
 }
