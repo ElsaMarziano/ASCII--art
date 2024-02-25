@@ -21,8 +21,6 @@ public class Image {
         BufferedImage im = ImageIO.read(new File(filename));
         width = im.getWidth();
         height = im.getHeight();
-
-
         pixelArray = new Color[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {

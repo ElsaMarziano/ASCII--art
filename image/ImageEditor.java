@@ -1,6 +1,9 @@
 package image;
 
 import java.awt.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -8,6 +11,8 @@ import java.awt.*;
  * padding it, dividing it to subimages and so on. Every function is static.
  */
 public class ImageEditor {
+    private static final Map<Map.Entry<Image, Integer>, Image[][]> parsedImages = new HashMap<>();
+
     /**
      * This function receives an image and pads it so each side will be the size of a power of 2
      *
@@ -51,14 +56,22 @@ public class ImageEditor {
      * @return an array of arrays of subimages
      */
     public static Image[][] parseImage(int resolution, Image image) {
+        // Check if we already calculated the sub-images for this image and resolution
+        if (ImageEditor.parsedImages.containsKey(new AbstractMap.SimpleImmutableEntry<>(image,
+                resolution)))
+            return ImageEditor.parsedImages.get(new AbstractMap.SimpleImmutableEntry<>(image,
+                    resolution));
+
+        // Else, calculate it and save it
         int size = image.getWidth() / resolution;
         Image[][] subImages = new Image[resolution][resolution];
-
         for (int i = 0; i < resolution; i++) {
             for (int j = 0; j < resolution; j++) {
                 subImages[i][j] = getSubImage(size, i * size, j * size, image);
             }
         }
+        ImageEditor.parsedImages.put(new AbstractMap.SimpleImmutableEntry<>(image,
+                resolution), subImages);
         return subImages;
     }
 
