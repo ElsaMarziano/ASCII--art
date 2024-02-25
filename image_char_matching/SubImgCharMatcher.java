@@ -2,8 +2,7 @@ package image_char_matching;
 
 import image.BrightnessCalculator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is responsible for matching between a charset with a certain brightness and the
@@ -13,6 +12,7 @@ public class SubImgCharMatcher {
     private final static int TOTAL_SQUARES = CharConverter.DEFAULT_PIXEL_RESOLUTION ^ 2;
     private final Map<Character, Double> charset = new HashMap<>();
     private final Map<Double, Character> normalizedCharset = new HashMap<>();
+    private final List<Character> sortedChars = new ArrayList<>();
     private double minBrightness = Double.MAX_VALUE;
     private double maxBrightness = -1;
 
@@ -68,6 +68,8 @@ public class SubImgCharMatcher {
     public void addChar(char c) {
         double charBrightness = BrightnessCalculator.getCharBrightness(c, TOTAL_SQUARES);
         this.charset.put(c, charBrightness);
+        sortedChars.add(c);
+        Collections.sort(sortedChars);
         // Updates the min and max brightness if needed
         if (charBrightness > maxBrightness) {
             maxBrightness = charBrightness;
@@ -82,10 +84,7 @@ public class SubImgCharMatcher {
                 this.normalizedCharset.replace(normalizedBrightness, (char) Math.min(c,
                         identicalChar));
             }
-            // If it's in the set, check if need to replace
-            // Else, put it in set
         }
-        //TODO Change normalized set
 
     }
 
@@ -97,6 +96,7 @@ public class SubImgCharMatcher {
     public void removeChar(char c) {
         Double charBrightness = this.charset.get(c);
         this.charset.remove(c);
+        this.sortedChars.removeIf(currentChar -> currentChar.equals(c));
         // Update min and max brightness if needed
         if (charBrightness == this.minBrightness || charBrightness == this.maxBrightness) {
             minBrightness = Double.MAX_VALUE;
@@ -113,6 +113,18 @@ public class SubImgCharMatcher {
     private double calculateNormalizedBrightness(double brightness) {
         double maxMinusMin = this.maxBrightness - this.minBrightness;
         return (brightness - this.minBrightness) / maxMinusMin;
+    }
+
+    /**
+     * This function prints the charset in the ASCII order
+     */
+    public void printCharSet() {
+        // Iterate over the sorted list and print the entries
+        for (Character key : sortedChars) {
+            System.out.print(key);
+            if (!sortedChars.getLast().equals(key)) System.out.print(" ");
+        }
+        System.out.println();
     }
 
 }
