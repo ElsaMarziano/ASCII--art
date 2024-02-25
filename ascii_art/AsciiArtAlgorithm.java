@@ -5,9 +5,7 @@ import image.Image;
 import image.ImageEditor;
 import image_char_matching.SubImgCharMatcher;
 
-import java.io.IOException;
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,13 +21,6 @@ public class AsciiArtAlgorithm {
         this.resolution = resolution;
 //        this.setOfChars = setOfChars;
         this.charMatcher = new SubImgCharMatcher(setOfChars);
-    }
-
-    public static void main(String[] args) throws IOException {
-        Image image = new Image("./board.jpeg");
-        AsciiArtAlgorithm algo = new AsciiArtAlgorithm(image, 2,
-                new char[]{'o', 'm'});
-        System.out.print(Arrays.deepToString(algo.run()));
     }
 
     public char[][] run() {
