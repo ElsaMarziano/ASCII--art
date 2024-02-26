@@ -127,4 +127,8 @@ public class SubImgCharMatcher {
         System.out.println();
     }
 
+    public List<Character> getCharSet(){
+        return sortedChars;
+    }
+
 }
