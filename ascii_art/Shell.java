@@ -1,9 +1,9 @@
 package ascii_art;
 
+import ascii_output.ConsoleAsciiOutput;
+import ascii_output.HtmlAsciiOutput;
 import image.Image;
 import image_char_matching.SubImgCharMatcher;
-import ascii_output.HtmlAsciiOutput;
-import ascii_output.ConsoleAsciiOutput;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -21,23 +21,22 @@ public class Shell {
             "Did not change resolution due to exceeding boundaries.";
     private static final String COMMAND_DOESNT_EXIT = "Did not execute due to" +
             " incorrect command";
-
-    // Default to console output
-    private static String selectedOutputStream = "console";
     private static final SubImgCharMatcher imgCharMatcher = new SubImgCharMatcher(
             new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'});
-    private static final String PROMPT =">>> ";
+    private static final String PROMPT = ">>> ";
     private static final int ASCII_START = 32;
     private static final int ASCII_END = 126;
+    private final static ConsoleAsciiOutput console = new ConsoleAsciiOutput();
+    private final static HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("out.html",
+            "Courier New");
+    // Default to console output
+    private static String selectedOutputStream = "console";
     private static int resolution = 128;
     private static Image loadedImage;
 
-    private final static ConsoleAsciiOutput console = new ConsoleAsciiOutput();
-    private final static HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput();
-
     public static void main(String[] args) {
         try {
-            Shell.loadedImage = new Image("./cat.jpeg");
+            Shell.loadedImage = new Image("cat.jpeg");
             Shell.run();
         } catch (IOException error) {
             System.out.println(error.getMessage());
@@ -66,6 +65,7 @@ public class Shell {
                     case "image" -> Shell.image(params);
                     case "output" -> Shell.output(params);
                     case "asciiArt" -> Shell.asciiArt();
+                    default -> System.out.println(COMMAND_DOESNT_EXIT);
                 }
 
                 System.out.print(PROMPT);
@@ -142,21 +142,19 @@ public class Shell {
     }
 
     private static void output(String outputStream) throws IllegalArgumentException {
-        switch (outputStream){
-            case "console":
+        switch (outputStream) {
+            case "console", "html":
                 selectedOutputStream = outputStream;
-            case "html":
-                selectedOutputStream = outputStream;
+                break;
             default:
                 // TODO check if the exception is Argument or parameter.
                 throw new IllegalArgumentException(INVALID_OUTPUT_COMMAND_MESSAGE);
         }
-
     }
 
     private static void asciiArt() {
         AsciiArtAlgorithm algo = new AsciiArtAlgorithm(Shell.loadedImage,
-                Shell.resolution, imgCharMatcher.getCharSet());
+                Shell.resolution, imgCharMatcher);
         char[][] asciiArt = algo.run();
         if (selectedOutputStream.equals("console")) {
             console.out(asciiArt);

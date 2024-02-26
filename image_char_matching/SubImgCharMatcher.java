@@ -9,7 +9,8 @@ import java.util.*;
  * corresponding ASCII character in the set
  */
 public class SubImgCharMatcher {
-    private final static int TOTAL_SQUARES = CharConverter.DEFAULT_PIXEL_RESOLUTION ^ 2;
+    private final static int TOTAL_SQUARES =
+            (int) Math.pow(CharConverter.DEFAULT_PIXEL_RESOLUTION, 2);
     private final Map<Character, Double> charset = new HashMap<>();
     private final Map<Double, Character> normalizedCharset = new HashMap<>();
     private final List<Character> sortedChars = new ArrayList<>();
@@ -94,6 +95,7 @@ public class SubImgCharMatcher {
      * @param c the char to be removed
      */
     public void removeChar(char c) {
+        if (!charset.containsKey(c)) return;
         Double charBrightness = this.charset.get(c);
         this.charset.remove(c);
         this.sortedChars.removeIf(currentChar -> currentChar.equals(c));
@@ -125,10 +127,6 @@ public class SubImgCharMatcher {
             if (!sortedChars.getLast().equals(key)) System.out.print(" ");
         }
         System.out.println();
-    }
-
-    public List<Character> getCharSet(){
-        return sortedChars;
     }
 
 }

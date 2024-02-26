@@ -25,20 +25,19 @@ public class ImageEditor {
 
         int widthDifference = newWidth - image.getWidth();
         int heightDifference = newHeight - image.getHeight();
-
         Color[][] paddedImage = new Color[newHeight][newWidth];
 
         // Apply white padding to the necessary areas
         for (int row = 0; row < newHeight; row++) {
             for (int col = 0; col < newWidth; col++) {
                 if (row < heightDifference / 2 ||
-                        row >= newHeight - heightDifference / 2 ||
+                        row >= newHeight - (heightDifference / 2) ||
                         col < widthDifference / 2 ||
-                        col >= newWidth - widthDifference / 2) {
+                        col >= newWidth - (widthDifference / 2)) {
                     paddedImage[row][col] = Color.WHITE;
                 } else {
                     paddedImage[row][col] =
-                            image.getPixel(row - heightDifference, col - widthDifference);
+                            image.getPixel(row - heightDifference / 2, col - widthDifference / 2);
                 }
             }
         }

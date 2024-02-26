@@ -16,11 +16,11 @@ public class AsciiArtAlgorithm {
     //    private final char[] setOfChars;
     private Image image;
 
-    public AsciiArtAlgorithm(Image image, int resolution, char[] setOfChars) {
+    public AsciiArtAlgorithm(Image image, int resolution, SubImgCharMatcher charMatcher) {
         this.image = image;
         this.resolution = resolution;
 //        this.setOfChars = setOfChars;
-        this.charMatcher = new SubImgCharMatcher(setOfChars);
+        this.charMatcher = charMatcher;
     }
 
     public char[][] run() {
@@ -37,6 +37,7 @@ public class AsciiArtAlgorithm {
                 for (int j = 0; j < subImages[i].length; j++) {
                     double imageBrightness =
                             BrightnessCalculator.calculateBrightness(subImages[i][j]);
+                    System.out.println((imageBrightness));
                     finalPicture[i][j] = this.charMatcher.getCharByImageBrightness(imageBrightness);
                 }
             }
