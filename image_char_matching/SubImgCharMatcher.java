@@ -67,6 +67,9 @@ public class SubImgCharMatcher {
      * @param c the char to be added
      */
     public void addChar(char c) {
+        if (this.charset.containsKey(c)){
+            return;
+        }
         double charBrightness = BrightnessCalculator.getCharBrightness(c, TOTAL_SQUARES);
         this.charset.put(c, charBrightness);
         sortedChars.add(c);

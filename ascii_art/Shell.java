@@ -130,13 +130,18 @@ public class Shell {
 
     }
 
-    private static void image(String path) throws InvalidParameterException {
+    private static void image(String path) throws IllegalArgumentException {
         try {
             // TODO Check this doesn't erase the image if wrong path is entered
+            //TODO Check if the exception in this case is OK
+            if (path == null || path.isEmpty()) {
+                throw new IllegalArgumentException("Did not execute due to problem" +
+                        " with image file.\n");
+            }
             Shell.loadedImage = new Image(path);
         } catch (IOException e) {
-            //TODO check if the the throw is not InvalidArgument...
-            throw new InvalidParameterException("Did not execute due to problem with image file" +
+            //TODO check if the the throw is IllegalArgument
+            throw new IllegalArgumentException("Did not execute due to problem with image file" +
                     ".\n");
         }
     }
