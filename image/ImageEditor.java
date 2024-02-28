@@ -22,11 +22,9 @@ public class ImageEditor {
         //Calculate the correct dimensions of the image
         int newWidth = nearestPowerOf2(image.getWidth());
         int newHeight = nearestPowerOf2(image.getHeight());
-
         int widthDifference = newWidth - image.getWidth();
         int heightDifference = newHeight - image.getHeight();
         Color[][] paddedImage = new Color[newHeight][newWidth];
-
         // Apply white padding to the necessary areas
         for (int row = 0; row < newHeight; row++) {
             for (int col = 0; col < newWidth; col++) {
@@ -44,9 +42,6 @@ public class ImageEditor {
         return new Image(paddedImage, newWidth, newHeight);
     }
 
-    private static int nearestPowerOf2(int value) {
-        return (int) Math.pow(2, Math.ceil(Math.log(value) / Math.log(2)));
-    }
 
     /**
      * This function separates the image into subimages according to the resolution
@@ -60,7 +55,6 @@ public class ImageEditor {
                 resolution)))
             return ImageEditor.parsedImages.get(new AbstractMap.SimpleImmutableEntry<>(image,
                     resolution));
-
         // Else, calculate it and save it
         int size = image.getWidth() / resolution;
         Image[][] subImages = new Image[resolution][resolution];
@@ -94,8 +88,14 @@ public class ImageEditor {
                 }
             }
         }
-
         // Create and return a new Image object for the sub-image
         return new Image(subImagePixels, size, size);
+    }
+
+    /*
+    This function returns the nearest power of two of a given number
+     */
+    private static int nearestPowerOf2(int value) {
+        return (int) Math.pow(2, Math.ceil(Math.log(value) / Math.log(2)));
     }
 }

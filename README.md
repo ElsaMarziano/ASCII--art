@@ -1,13 +1,8 @@
-# ASCII--art
+e342791191,aharonuhohoheroigvre
+342791191,2343333333333333333
 
-Functions to explain:
-
-- Print char in SumImgCharMatcher
-
-Things to check:
-
-- Is "add all" OK?
-- Check we don't add the same char twice
-- Change output when changing image
-- Handle image not found/problem with image
-- Empty charset
+1. Diagram
+2. Data structures
+3. Exceptions
+4. Print char in SumImgCharMatcher
+5. Changes in other classes

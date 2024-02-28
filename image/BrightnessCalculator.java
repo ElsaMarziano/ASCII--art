@@ -8,7 +8,6 @@ import java.awt.*;
  * This is a utility class whose only role is to calculate the brightness of a given picture.
  */
 public class BrightnessCalculator {
-
     private static final double RED_WEIGHT = 0.2126;
     private static final double GREEN_WEIGHT = 0.7152;
     private static final double BLUE_WEIGHT = 0.0722;

@@ -9,6 +9,8 @@ import java.util.*;
  * corresponding ASCII character in the set
  */
 public class SubImgCharMatcher {
+    private static final String DID_NOT_EXECUTE_CHARSET_IS_EMPTY = "Did not execute. Charset is " +
+            "empty.";
     private final static int TOTAL_SQUARES =
             (int) Math.pow(CharConverter.DEFAULT_PIXEL_RESOLUTION, 2);
     private final Map<Character, Double> charset = new HashMap<>();
@@ -37,6 +39,8 @@ public class SubImgCharMatcher {
      * @return the ASCII symbol to be printed
      */
     public char getCharByImageBrightness(double brightness) {
+        if (charset.isEmpty() || this.minBrightness == this.maxBrightness)
+            throw new IllegalStateException(DID_NOT_EXECUTE_CHARSET_IS_EMPTY);
         if (this.normalizedCharset.isEmpty() || !this.normalizedCharset.containsKey(brightness)) {
             double difference = Double.MAX_VALUE;
             char closestChar = 0;
@@ -67,7 +71,7 @@ public class SubImgCharMatcher {
      * @param c the char to be added
      */
     public void addChar(char c) {
-        if (this.charset.containsKey(c)){
+        if (this.charset.containsKey(c)) {
             return;
         }
         double charBrightness = BrightnessCalculator.getCharBrightness(c, TOTAL_SQUARES);
@@ -89,7 +93,6 @@ public class SubImgCharMatcher {
                         identicalChar));
             }
         }
-
     }
 
     /**
@@ -115,6 +118,9 @@ public class SubImgCharMatcher {
         }
     }
 
+    /*
+    This function normalizes the given brightness according to min and max
+     */
     private double calculateNormalizedBrightness(double brightness) {
         double maxMinusMin = this.maxBrightness - this.minBrightness;
         return (brightness - this.minBrightness) / maxMinusMin;
