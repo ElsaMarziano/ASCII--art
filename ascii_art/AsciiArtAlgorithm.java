@@ -13,7 +13,6 @@ public class AsciiArtAlgorithm {
     private final SubImgCharMatcher charMatcher;
     private final int resolution;
     private final Map<Map.Entry<Image, Integer>, char[][]> subImagesBrightness = new HashMap<>();
-    //    private final char[] setOfChars;
     private Image image;
 
     public AsciiArtAlgorithm(Image image, int resolution, SubImgCharMatcher charMatcher) {
