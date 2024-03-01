@@ -35,7 +35,8 @@ public class ImageEditor {
                     paddedImage[row][col] = Color.WHITE;
                 } else {
                     paddedImage[row][col] =
-                            image.getPixel(row - heightDifference / 2, col - widthDifference / 2);
+                            image.getPixel(row - heightDifference / 2,
+                                    col - widthDifference / 2);
                 }
             }
         }
