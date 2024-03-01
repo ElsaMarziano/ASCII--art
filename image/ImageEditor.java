@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * This class regroups every function in charge of editing the image in any way whatsoever -
- * padding it, dividing it to subimages and so on. Every function is static.
+ * padding it, dividing it to subImages and so on. Every function is static.
  */
 public class ImageEditor {
     private static final Map<Map.Entry<Image, Integer>, Image[][]> parsedImages = new HashMap<>();
@@ -45,10 +45,10 @@ public class ImageEditor {
 
 
     /**
-     * This function separates the image into subimages according to the resolution
+     * This function separates the image into subImages according to the resolution
      *
      * @param resolution the desired resolution
-     * @return an array of arrays of subimages
+     * @return an array of arrays of subImages
      */
     public static Image[][] parseImage(int resolution, Image image) {
         // Check if we already calculated the sub-images for this image and resolution

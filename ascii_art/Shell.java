@@ -67,6 +67,8 @@ public class Shell {
         } catch (IOException error) {
             System.out.println(error.getMessage());
             //TODO Check if there more exceptions to catch
+        } catch (InvalidActionException error){
+            System.out.println(error.getMessage());
         }
 
     }

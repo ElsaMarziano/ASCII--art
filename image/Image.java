@@ -17,11 +17,16 @@ public class Image {
     private final int width;
     private final int height;
 
+    /**
+     * Constructs an Image object from the specified file.
+     *
+     * @param filename The path to the image file.
+     * @throws IOException If an error occurs while reading the image file.
+     */
     public Image(String filename) throws IOException {
         BufferedImage im = ImageIO.read(new File(filename));
         width = im.getWidth();
         height = im.getHeight();
-
 
         pixelArray = new Color[height][width];
         for (int i = 0; i < height; i++) {
@@ -31,24 +36,53 @@ public class Image {
         }
     }
 
+    /**
+     * Constructs an Image object from the specified pixel array.
+     *
+     * @param pixelArray The pixel array representing the image.
+     * @param width      The width of the image.
+     * @param height     The height of the image.
+     */
     public Image(Color[][] pixelArray, int width, int height) {
         this.pixelArray = pixelArray;
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Gets the width of the image.
+     *
+     * @return The width of the image.
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Gets the height of the image.
+     *
+     * @return The height of the image.
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Gets the color of the pixel at the specified coordinates.
+     *
+     * @param x The x-coordinate of the pixel.
+     * @param y The y-coordinate of the pixel.
+     * @return The color of the pixel.
+     */
     public Color getPixel(int x, int y) {
         return pixelArray[x][y];
     }
 
+    /**
+     * Saves the image to a file with the specified filename.
+     *
+     * @param fileName The filename of the saved image.
+     */
     public void saveImage(String fileName) {
         // Initialize BufferedImage, assuming Color[][] is already properly populated.
         BufferedImage bufferedImage = new BufferedImage(pixelArray[0].length, pixelArray.length,

@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The AsciiArtAlgorithm class generates ASCII art from an image using a specified resolution and character matcher.
+ * The AsciiArtAlgorithm class generates ASCII art from an image using a specified resolution and
+ * character matcher.
  * @author Elsa Sebagh and Aharon Saksonov
  */
 public class AsciiArtAlgorithm {
@@ -20,7 +21,8 @@ public class AsciiArtAlgorithm {
     private Image image;
 
     /**
-     * Constructs an AsciiArtAlgorithm object with the given image, resolution, and character matcher.
+     * Constructs an AsciiArtAlgorithm object with the given image, resolution,
+     * and character matcher.
      *
      * @param image       The input image for generating ASCII art.
      * @param resolution  The resolution (number of characters per row) for the ASCII art.

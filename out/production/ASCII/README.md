@@ -1,5 +1,37 @@
-# ASCII--art
+e342791191,aharonuhohoheroigvre
+342791191,2343333333333333333
 
-Functions to explain:
+1. Diagram
+2. Data structures
+   private final Map<Character, Double> charset = new HashMap<>();
+   We saved the charset in a hashedmap to be able to save a key-value couple of each char and
+   its non-normalized brightness. Hashmap gave us the ability to save and access every value in
+   an optimized time
+   private final Map<Double, Character> normalizedCharset = new HashMap<>();
+   We saved the normalized charset so it would allow us to save runtime when using the same charset
+   twice in a row. The map allowed us to save key-value couples of each char and its normalized
+   brightness
+   private final List<Character> sortedChars = new ArrayList<>();
+   We saved a sorted charset to save runtime, so that when we print the charset we don't have to
+   sort it. Adding and removing chars after the initialization takes O(n) worst case and is
+   therefore faster than creating and sorting a new List every time we want to print the chars. A
+   List is more practical than an array and gave us the flexibility needed to add
+   and remove chars as needed
+   private static final Map<Map.Entry<Image, Integer>, Image[][]> parsedImages = new HashMap<>();
+   We used a hash map to save the division into sub-images for each image and resolution
+   combination, to save runtime if the user uses the same image and resolution twice.
+   private final Map<Map.Entry<Image, Integer>, char[][]> subImagesBrightness = new HashMap<>();
+   We used a map to save for each image and resolution, the result we get with the chars so we
+   won't need to rerun the algorithm if the user wants the same picture with same resolution and
+   charset twice
 
-- Print char in SumImgCharMatcher
+
+3. Exceptions:
+   IllegalArgumentException
+
+4. public void printCharSet()
+   This funcition goes over the sorted charset and prints each char. It is needed in the Shell
+   class when user wants to print the char in the charset. The alternative would be for Shell
+   to access the charset, which is less convenient and takes up more memory space
+
+5. Changes in other classes
