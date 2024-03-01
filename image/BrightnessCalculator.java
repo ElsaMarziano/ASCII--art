@@ -32,7 +32,6 @@ public class BrightnessCalculator {
                 totalPixels += 1;
             }
         }
-        System.out.println(totalBrightness + " " + totalPixels + " " + maxBrightness);
         return totalBrightness / (totalPixels * maxBrightness);
     }
 

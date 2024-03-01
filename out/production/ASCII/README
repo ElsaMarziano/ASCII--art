@@ -43,3 +43,4 @@ e342791191,archsak
                                 the image to subImages
                             public static Image imagePadding(Image image) - padding the image to
                                 size that is prime of 2.
+    BrightnessCalculator -

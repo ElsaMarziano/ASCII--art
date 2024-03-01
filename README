@@ -9,7 +9,11 @@ AsciiAlgorithm class runs the algorithm and calls the right functions of SubImgB
 ImageEditor when needed. ImageEditor is a utility class responsible of everything that has t do with
  editing the image - dividing it into subimages, padding it and such. BrightnessCalculator is also
  a utility class used by SubImgCharMatcher and AsciiArtAlgorithm to get the brightness of a char or
- a subimage.
+ a subimage. The Exceptions classes guide the user in understanding why his command didn't work.
+ UnknownCommandException is used when command isn't recognised. InvalidCommandFormatException is
+ used with a legal command but illegal format. InvalidActionException is used with valid command
+ and valid format but action couldn't be performed due to another reason. They all extend
+ InvalidCommandException.
 
 2. Data structures
    private final Map<Character, Double> charset = new HashMap<>();
@@ -35,12 +39,12 @@ ImageEditor when needed. ImageEditor is a utility class responsible of everythin
    charset twice
 
 
-3. Exceptions:
-   InvalidActionException
-   IOException
+3. We created a package with Exceptions that answered our needs: the InvalidCommandException extends
+ RuntimeException, and the three other exceptions extends InvalidCommandException. This allowed us
+ to have the maximum amount of information concerning the command the user entered.
 
 4. public void printCharSet()
-   This funcition goes over the sorted charset and prints each char. It is needed in the Shell
+   This function goes over the sorted charset and prints each char. It is needed in the Shell
    class when user wants to print the char in the charset. The alternative would be for Shell
    to access the charset, which is less convenient and takes up more memory space
 
@@ -61,4 +65,5 @@ ImageEditor when needed. ImageEditor is a utility class responsible of everythin
                             public static double getCharBrightness(char c, float total_pixels) -
                             receives a char and its size and returns its brightness (goes over every
                              pixel and returns the average)
+    Exceptions package -
 
