@@ -6,9 +6,16 @@ import image.Image;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.function.Consumer;
 
-
+/**
+ * The Shell class provides a command-line interface for interacting with the ASCII art generator.
+ * It allows users to perform various actions such as changing the character set, adjusting
+ * resolution, loading images, and generating ASCII art.
+ *
+ * @author Elsa Sebagh and Aharon Saksonov
+ */
 public class Shell {
     private static final String INVALID_COMMAND_MESSAGE =
             "Did not execute due to incorrect format.";
@@ -30,19 +37,26 @@ public class Shell {
     private static final SubImgCharMatcher imgCharMatcher = new SubImgCharMatcher(
             new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'});
     private static final String PROMPT = ">>> ";
+    private static final String DEFAULT_IMAGE = "cat.jpeg";
     private static final int ASCII_START = 32;
     private static final int ASCII_END = 126;
     private static final ConsoleAsciiOutput console = new ConsoleAsciiOutput();
     private static final HtmlAsciiOutput htmlAsciiOutput = new HtmlAsciiOutput("out.html",
             "Courier New");
+
     // Default to console output
     private static String selectedOutputStream = "console";
     private static int resolution = 128;
     private static Image loadedImage;
 
+    /**
+     * Main method to start the ASCII art shell.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         try {
-            Shell.loadedImage = new Image("cat.jpeg");
+            Shell.loadedImage = new Image(DEFAULT_IMAGE);
             Shell.run();
         } catch (IOException error) {
             System.out.println(error.getMessage());
@@ -50,7 +64,11 @@ public class Shell {
 
     }
 
-    public static void run() {
+
+    /**
+     * Runs the ASCII art shell, allowing users to input commands and interact with the generator.
+     */
+    public static void run() throws InvalidParameterException{
         System.out.print(PROMPT);
         String command;
         while (true) {
@@ -62,12 +80,12 @@ public class Shell {
                 switch (methodName) {
                     case "exit" -> {
                         if (params != null)
-                            throw new IllegalArgumentException(INVALID_COMMAND_MESSAGE);
+                            throw new InvalidParameterException(INVALID_COMMAND_MESSAGE);
                         System.exit(0);
                     }
                     case "chars" -> {
                         if (params != null)
-                            throw new IllegalArgumentException(INVALID_CHARS_MESSAGE);
+                            throw new InvalidParameterException(INVALID_CHARS_MESSAGE);
                         Shell.imgCharMatcher.printCharSet();
                     }
                     case "add" -> Shell.changeCharSet(params,
@@ -79,13 +97,13 @@ public class Shell {
                     case "output" -> Shell.output(params);
                     case "asciiArt" -> {
                         if (params != null)
-                            throw new IllegalArgumentException(INVALID_COMMAND_MESSAGE);
+                            throw new InvalidParameterException(INVALID_COMMAND_MESSAGE);
                         Shell.asciiArt();
                     }
                     default -> System.out.println(COMMAND_DOESNT_EXIT);
                 }
                 System.out.print(PROMPT);
-            } catch (IllegalArgumentException err) {
+            } catch (InvalidParameterException err) {
                 System.out.println(err.getMessage());
                 System.out.print(PROMPT);
             }
@@ -98,9 +116,9 @@ public class Shell {
      */
     private static void changeCharSet(String param, Consumer<Character> consumer,
                                       String action)
-            throws IllegalArgumentException {
+            throws InvalidActionException {
         if (param == null || param.trim().isEmpty())
-            throw new IllegalArgumentException(INVALID_ADD_MESSAGE);
+            throw new InvalidActionException(INVALID_ADD_MESSAGE);
         else if (param.equals("all")) {
             for (int i = ASCII_START; i <= ASCII_END; i++) {
                 consumer.accept((char) i);
@@ -118,59 +136,72 @@ public class Shell {
                 consumer.accept((char) i);
             }
         } else {
-            throw new IllegalArgumentException("Did not " + action +
+            throw new InvalidActionException("Did not " + action +
                     " due to incorrect format.");
         }
     }
 
 
-    private static void res(String change) throws IllegalArgumentException {
+    /*
+     * Changes the resolution of the ASCII art.
+     *
+     * @param change The change in resolution ("up" or "down").
+     * @throws IllegalArgumentException If the change parameter is invalid.
+     */
+    private static void res(String change) throws InvalidActionException {
         if (change == null)
-            throw new IllegalArgumentException(INVALID_RESOLUTION_COMMAND_MESSAGE);
+            throw new InvalidActionException(INVALID_RESOLUTION_COMMAND_MESSAGE);
         int minCharsInRows = Math.max(1,
                 Shell.loadedImage.getWidth() / Shell.loadedImage.getHeight());
         switch (change) {
             case "up":
                 if (Shell.resolution * 2 > Shell.loadedImage.getWidth())
-                    throw new IllegalArgumentException(FAIL_IN_CHANGING_RESOLUTION_MESSAGE);
+                    throw new InvalidActionException(
+                            FAIL_IN_CHANGING_RESOLUTION_MESSAGE);
                 else Shell.resolution *= 2;
                 break;
             case "down":
                 if (Shell.resolution / 2 < minCharsInRows)
-                    throw new IllegalArgumentException(FAIL_IN_CHANGING_RESOLUTION_MESSAGE);
+                    throw new InvalidActionException(FAIL_IN_CHANGING_RESOLUTION_MESSAGE);
                 else Shell.resolution /= 2;
                 break;
             default:
-                throw new IllegalArgumentException(INVALID_RESOLUTION_COMMAND_MESSAGE);
+                throw new InvalidActionException(INVALID_RESOLUTION_COMMAND_MESSAGE);
         }
         System.out.println("Resolution set to " + Shell.resolution);
     }
 
-    private static void image(String path) throws IllegalArgumentException {
+    private static void image(String path) throws InvalidParameterException {
         try {
             // TODO Check this doesn't erase the image if wrong path is entered
             if (path == null || path.isEmpty()) {
-                throw new IllegalArgumentException(INVALID_IMAGE_MESSAGE);
+                throw new InvalidParameterException(INVALID_IMAGE_MESSAGE);
             }
             Shell.loadedImage = new Image(path);
         } catch (IOException e) {
-            throw new IllegalArgumentException(INVALID_IMAGE_MESSAGE);
+            //TODO Correct the exception here
+            throw new InvalidParameterException(INVALID_IMAGE_MESSAGE);
         }
     }
 
-    private static void output(String outputStream) throws IllegalArgumentException {
+    private static void output(String outputStream) throws InvalidActionException {
         if (outputStream == null)
-            throw new IllegalArgumentException(INVALID_OUTPUT_COMMAND_MESSAGE);
+            throw new InvalidActionException(INVALID_OUTPUT_COMMAND_MESSAGE);
         switch (outputStream) {
             case "console":
+                selectedOutputStream = "console";
+                break;
             case "html":
                 selectedOutputStream = outputStream;
                 break;
             default:
-                throw new IllegalArgumentException(INVALID_OUTPUT_COMMAND_MESSAGE);
+                throw new InvalidActionException(INVALID_OUTPUT_COMMAND_MESSAGE);
         }
     }
 
+    /*
+     * Generates ASCII art from the loaded image and displays it using the selected output method.
+     */
     private static void asciiArt() {
         AsciiArtAlgorithm algo = new AsciiArtAlgorithm(Shell.loadedImage,
                 Shell.resolution, imgCharMatcher);
