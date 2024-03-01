@@ -48,22 +48,5 @@ ImageEditor when needed. ImageEditor is a utility class responsible of everythin
    class when user wants to print the char in the charset. The alternative would be for Shell
    to access the charset, which is less convenient and takes up more memory space
 
-5. Changes in other classes
-    ImageEditor class - We created a class that is responsible for editing an image, such as
-                        dividing it into small sub-images and padding the image to a suitable size.
-                        the public methods in this class:
-                            public static Image[][] parseImage(int resolution, Image image) - parse
-                                the image to subImages
-                            public static Image imagePadding(Image image) - padding the image to
-                                size that is prime of 2.
-    BrightnessCalculator class - Utility class that calculates the brightness of a given image or
-                        char, with private helper functions.
-                            public static double calculateBrightness(Image image) - receives an
-                            image
-                            and returns its general brightness (turns every pixel to grey, then
-                            returns the average of all the colors)
-                            public static double getCharBrightness(char c, float total_pixels) -
-                            receives a char and its size and returns its brightness (goes over every
-                             pixel and returns the average)
-    Exceptions package -
+5. XXX
 
