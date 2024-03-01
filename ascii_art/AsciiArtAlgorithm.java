@@ -52,7 +52,7 @@ public class AsciiArtAlgorithm {
                 for (int j = 0; j < subImages[i].length; j++) {
                     double imageBrightness =
                             BrightnessCalculator.calculateBrightness(subImages[i][j]);
-                    //TODO erase this print???
+                    //TO
                     System.out.println((imageBrightness));
                     finalPicture[i][j] = this.charMatcher.getCharByImageBrightness(imageBrightness);
                 }

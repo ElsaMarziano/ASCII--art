@@ -17,10 +17,12 @@ import java.util.function.Consumer;
  * @author Elsa Sebagh and Aharon Saksonov
  */
 public class Shell {
+    // Constants for error messages
+
     private static final String INVALID_COMMAND_MESSAGE =
             "Did not execute due to incorrect format.";
-    private static final String INVALID_CHARS_MESSAGE =
-            "Did not change resolution due to incorrect format.";
+//    private static final String INVALID_CHARS_MESSAGE =
+//            "Did not change resolution due to incorrect format.";
     private static final String INVALID_RESOLUTION_COMMAND_MESSAGE =
             "Did not change resolution due to incorrect format.";
     private static final String INVALID_OUTPUT_COMMAND_MESSAGE =
@@ -34,9 +36,13 @@ public class Shell {
     private static final String INVALID_IMAGE_MESSAGE = "Did not change image due to" +
             " problem with image file.";
 
+
+    // Character set matcher
     private static final SubImgCharMatcher imgCharMatcher = new SubImgCharMatcher(
             new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'});
+    // Prompt string
     private static final String PROMPT = ">>> ";
+    // Default image file name
     private static final String DEFAULT_IMAGE = "cat.jpeg";
     private static final int ASCII_START = 32;
     private static final int ASCII_END = 126;
@@ -60,6 +66,7 @@ public class Shell {
             Shell.run();
         } catch (IOException error) {
             System.out.println(error.getMessage());
+            //TODO Check if there more exceptions to catch
         }
 
     }
@@ -67,8 +74,10 @@ public class Shell {
 
     /**
      * Runs the ASCII art shell, allowing users to input commands and interact with the generator.
+     *
+     * @throws InvalidActionException If an invalid action is encountered.
      */
-    public static void run() throws InvalidParameterException{
+    public static void run() throws InvalidActionException{
         System.out.print(PROMPT);
         String command;
         while (true) {
@@ -80,12 +89,13 @@ public class Shell {
                 switch (methodName) {
                     case "exit" -> {
                         if (params != null)
-                            throw new InvalidParameterException(INVALID_COMMAND_MESSAGE);
+                            throw new InvalidActionException(INVALID_COMMAND_MESSAGE);
                         System.exit(0);
                     }
                     case "chars" -> {
                         if (params != null)
-                            throw new InvalidParameterException(INVALID_CHARS_MESSAGE);
+                            //TODO Check if the correction of this constant is OK
+                            throw new InvalidActionException(INVALID_COMMAND_MESSAGE);
                         Shell.imgCharMatcher.printCharSet();
                     }
                     case "add" -> Shell.changeCharSet(params,
@@ -97,13 +107,13 @@ public class Shell {
                     case "output" -> Shell.output(params);
                     case "asciiArt" -> {
                         if (params != null)
-                            throw new InvalidParameterException(INVALID_COMMAND_MESSAGE);
+                            throw new InvalidActionException(INVALID_COMMAND_MESSAGE);
                         Shell.asciiArt();
                     }
                     default -> System.out.println(COMMAND_DOESNT_EXIT);
                 }
                 System.out.print(PROMPT);
-            } catch (InvalidParameterException err) {
+            } catch (InvalidActionException err) {
                 System.out.println(err.getMessage());
                 System.out.print(PROMPT);
             }
@@ -111,8 +121,12 @@ public class Shell {
     }
 
     /*
-    This function can add or remove chars from the charset according to the consumer passed as a
-    parameter
+     * Changes the character set according to the given parameters.
+     *
+     * @param param   The parameter indicating the character set modification.
+     * @param consumer The consumer function for character set modification.
+     * @param action  The action performed (add or remove).
+     * @throws InvalidActionException If an invalid action is encountered.
      */
     private static void changeCharSet(String param, Consumer<Character> consumer,
                                       String action)
@@ -184,6 +198,12 @@ public class Shell {
         }
     }
 
+    /*
+     * Changes the output method.
+     *
+     * @param outputStream The output method to be changed to.
+     * @throws InvalidActionException If an invalid action is encountered.
+     */
     private static void output(String outputStream) throws InvalidActionException {
         if (outputStream == null)
             throw new InvalidActionException(INVALID_OUTPUT_COMMAND_MESSAGE);

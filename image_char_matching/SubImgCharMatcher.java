@@ -6,7 +6,9 @@ import java.util.*;
 
 /**
  * This class is responsible for matching between a charset with a certain brightness and the
- * corresponding ASCII character in the set
+ * corresponding ASCII character in the set.
+ *
+ * @author Elsa Sebagh and Aharon Saksonov
  */
 public class SubImgCharMatcher {
     private static final String DID_NOT_EXECUTE_CHARSET_IS_EMPTY = "Did not execute. Charset is " +
