@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * The AsciiArtAlgorithm class generates ASCII art from an image using a specified resolution and
  * character matcher.
+ *
  * @author Elsa Sebagh and Aharon Saksonov
  */
 public class AsciiArtAlgorithm {
@@ -31,7 +32,6 @@ public class AsciiArtAlgorithm {
     public AsciiArtAlgorithm(Image image, int resolution, SubImgCharMatcher charMatcher) {
         this.image = image;
         this.resolution = resolution;
-//        this.setOfChars = setOfChars;
         this.charMatcher = charMatcher;
     }
 
@@ -48,14 +48,11 @@ public class AsciiArtAlgorithm {
         else {
             image = ImageEditor.imagePadding(image);
             Image[][] subImages = ImageEditor.parseImage(resolution, image);
-            //TODO Check the lengths aren't mixed up
             char[][] finalPicture = new char[subImages.length][subImages[0].length];
             for (int i = 0; i < subImages.length; i++) {
                 for (int j = 0; j < subImages[i].length; j++) {
                     double imageBrightness =
                             BrightnessCalculator.calculateBrightness(subImages[i][j]);
-                    //TO
-                    System.out.println((imageBrightness));
                     finalPicture[i][j] = this.charMatcher.getCharByImageBrightness(imageBrightness);
                 }
             }

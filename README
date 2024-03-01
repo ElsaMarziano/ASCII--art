@@ -1,7 +1,16 @@
 e342791191,archsak
 342791191,207600164
 
-1. Diagram
+1. The Shell class handles everything that is linked to the user, gets the user input and calls the
+right function accordingly. It creates an instance of SubImgCharMatcher to be passed to
+AsciiArtAlgorithm. The SubImgMatcher is responsible of everything that has to do with the charset -
+printing it, calculating chars brightness and normalized brightness, adding and removing chars. THe
+AsciiAlgorithm class runs the algorithm and calls the right functions of SubImgBrightness and
+ImageEditor when needed. ImageEditor is a utility class responsible of everything that has t do with
+ editing the image - dividing it into subimages, padding it and such. BrightnessCalculator is also
+ a utility class used by SubImgCharMatcher and AsciiArtAlgorithm to get the brightness of a char or
+ a subimage.
+
 2. Data structures
    private final Map<Character, Double> charset = new HashMap<>();
    We saved the charset in a hashedmap to be able to save a key-value couple of each char and
@@ -43,3 +52,13 @@ e342791191,archsak
                                 the image to subImages
                             public static Image imagePadding(Image image) - padding the image to
                                 size that is prime of 2.
+    BrightnessCalculator class - Utility class that calculates the brightness of a given image or
+                        char, with private helper functions.
+                            public static double calculateBrightness(Image image) - receives an
+                            image
+                            and returns its general brightness (turns every pixel to grey, then
+                            returns the average of all the colors)
+                            public static double getCharBrightness(char c, float total_pixels) -
+                            receives a char and its size and returns its brightness (goes over every
+                             pixel and returns the average)
+
