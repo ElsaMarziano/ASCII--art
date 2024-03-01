@@ -1,16 +1,9 @@
 package ascii_art;
 
 /**
- * Exception thrown to indicate that an invalid action was performed in the ASCII art shell.
- * This exception extends RuntimeException.
+ * A runtime exception indicating that the command action is invalid.
  */
-public class InvalidActionException extends RuntimeException {
-    /**
-     * Constructs a new InvalidActionException with the specified detail message.
-     *
-     * @param message the detail message (which is saved for later retrieval by the
-     *               getMessage() method)
-     */
+public class InvalidActionException extends InvalidCommandException {
     public InvalidActionException(String message) {
         super(message);
     }

@@ -135,7 +135,8 @@ public class SubImgCharMatcher {
         // Iterate over the sorted list and print the entries
         for (Character key : sortedChars) {
             System.out.print(key);
-            if (!sortedChars.getLast().equals(key)) System.out.print(" ");
+            //We used get method because getLast didn't work in the presubmit.
+            if (!sortedChars.get(sortedChars.size() - 1).equals(key)) System.out.print(" ");
         }
         System.out.println();
     }
