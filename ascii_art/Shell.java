@@ -4,6 +4,7 @@ import ascii_output.ConsoleAsciiOutput;
 import ascii_output.HtmlAsciiOutput;
 import exceptions.InvalidActionException;
 import exceptions.InvalidCommandFormatException;
+import exceptions.UnknownCommandException;
 import image.Image;
 import image_char_matching.SubImgCharMatcher;
 
@@ -105,10 +106,10 @@ public class Shell {
                             throw new InvalidCommandFormatException(INVALID_COMMAND_MESSAGE);
                         Shell.asciiArt();
                     }
-                    default -> System.out.println(COMMAND_DOESNT_EXIT);
+                    default -> throw new UnknownCommandException(COMMAND_DOESNT_EXIT);
                 }
                 System.out.print(PROMPT);
-            } catch (InvalidCommandFormatException err) {
+            } catch (InvalidCommandFormatException | UnknownCommandException err) {
                 System.out.println(err.getMessage());
                 System.out.print(PROMPT);
             }
